@@ -317,8 +317,7 @@ defmodule Explorer.Chain.Import.Runner.Blocks do
       repo.update_all(
         from(
           block in Block,
-          join: s in subquery(acquire_query),
-          on: block.hash == s.hash,
+          where: block.hash in subquery(acquire_query),
           # we don't want to remove consensus from blocks that will be upserted
           where: block.hash not in ^hashes,
           select: {block.number, block.hash}
