@@ -145,7 +145,7 @@ defmodule Indexer.Fetcher.EmptyBlocksSanitizer do
       on: q.number == transaction.block_number,
       select: q.hash,
       order_by: [asc: q.hash],
-      lock: "FOR NO KEY UPDATE"
+      lock: fragment("FOR NO KEY UPDATE OF ?", q)
     )
   end
 
