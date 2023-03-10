@@ -7,11 +7,12 @@
 ### Fixes
 
 - [#7008](https://github.com/blockscout/blockscout/pull/7008) - Fetch image/video content from IPFS link
-- [#7007](https://github.com/blockscout/blockscout/pull/7007), [#7031](https://github.com/blockscout/blockscout/pull/7031) - Token instance fetcher fixes
+- [#7007](https://github.com/blockscout/blockscout/pull/7007), [#7031](https://github.com/blockscout/blockscout/pull/7031), [#7058](https://github.com/blockscout/blockscout/pull/7058) - Token instance fetcher fixes
 - [#7009](https://github.com/blockscout/blockscout/pull/7009) - Fix updating coin balances with empty value
 
 ### Chore
 
+- [#7056](https://github.com/blockscout/blockscout/pull/7056) - Add path_helper in interact.js
 - [#7040](https://github.com/blockscout/blockscout/pull/7040) - Use alias BlockScoutWeb.Cldr.Number
 - [#7037](https://github.com/blockscout/blockscout/pull/7037) - Define common function for "reltuples" query
 - [#7034](https://github.com/blockscout/blockscout/pull/7034) - Resolve "Unexpected var, use let or const instead"
