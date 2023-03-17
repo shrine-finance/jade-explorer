@@ -488,8 +488,6 @@ defmodule EthereumJSONRPC.Transaction do
   end
 
   def eth_call_request(id, block_number, data, to, from, gas, gas_price, value) do
-    Logger.info("eth_call stacktrace: #{inspect(Process.info(self(), :current_stacktrace))}")
-
     block =
       case block_number do
         nil -> "latest"

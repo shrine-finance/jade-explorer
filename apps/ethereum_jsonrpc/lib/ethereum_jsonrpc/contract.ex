@@ -5,8 +5,6 @@ defmodule EthereumJSONRPC.Contract do
 
   import EthereumJSONRPC, only: [integer_to_quantity: 1, json_rpc: 2, request: 1]
 
-  require Logger
-
   alias EthereumJSONRPC.Encoder
 
   @typedoc """
@@ -184,8 +182,6 @@ defmodule EthereumJSONRPC.Contract do
   end
 
   def eth_call_request(data, contract_address, id, block_number, from) do
-    Logger.info("eth_call stacktrace: #{inspect(Process.info(self(), :current_stacktrace))}")
-
     block =
       case block_number do
         nil -> "latest"
