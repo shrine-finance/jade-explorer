@@ -62,6 +62,10 @@ defmodule BlockScoutWeb.TransactionView do
     if type, do: {type, transaction_with_transfers_filtered}, else: {nil, transaction_with_transfers_filtered}
   end
 
+  def transaction_actions(transaction) do
+    Repo.preload(transaction, :transaction_actions)
+  end
+
   def aggregate_token_transfers(token_transfers) do
     %{
       transfers: {ft_transfers, nft_transfers},
@@ -274,7 +278,7 @@ defmodule BlockScoutWeb.TransactionView do
     case block do
       %Block{consensus: true} ->
         {:ok, confirmations} = Chain.confirmations(block, named_arguments)
-        BlockScoutWeb.Cldr.Number.to_string!(confirmations, format: "#,###")
+        Number.to_string!(confirmations, format: "#,###")
 
       _ ->
         0
@@ -318,12 +322,26 @@ defmodule BlockScoutWeb.TransactionView do
     end
   end
 
+  def formatted_action_amount(data, field_name) do
+    data
+    |> Map.get(field_name)
+    |> Decimal.new()
+    |> Number.to_string!(format: "#,##0.##################")
+  end
+
+  def transaction_action_string_to_address(address) do
+    case Chain.string_to_address_hash(address) do
+      {:ok, address_hash} -> Chain.hash_to_address(address_hash)
+      _ -> {:error, nil}
+    end
+  end
+
   def transaction_status(transaction) do
     Chain.transaction_to_status(transaction)
   end
 
-  def transaction_revert_reason(transaction) do
-    transaction |> Chain.transaction_to_revert_reason() |> decoded_revert_reason(transaction)
+  def transaction_revert_reason(transaction, options \\ []) do
+    transaction |> Chain.transaction_to_revert_reason() |> decoded_revert_reason(transaction, options)
   end
 
   def get_pure_transaction_revert_reason(nil), do: nil
@@ -359,7 +377,7 @@ defmodule BlockScoutWeb.TransactionView do
   end
 
   def gas(%type{gas: gas}) when is_transaction_type(type) do
-    BlockScoutWeb.Cldr.Number.to_string!(gas)
+    Number.to_string!(gas)
   end
 
   def skip_decoding?(transaction) do
@@ -367,11 +385,11 @@ defmodule BlockScoutWeb.TransactionView do
   end
 
   def decoded_input_data(transaction) do
-    Transaction.decoded_input_data(transaction)
+    Transaction.decoded_input_data(transaction, [])
   end
 
-  def decoded_revert_reason(revert_reason, transaction) do
-    Transaction.decoded_revert_reason(transaction, revert_reason)
+  def decoded_revert_reason(revert_reason, transaction, options) do
+    Transaction.decoded_revert_reason(transaction, revert_reason, options)
   end
 
   @doc """
@@ -572,19 +590,19 @@ defmodule BlockScoutWeb.TransactionView do
 
     case revert_reason do
       "0x" <> hex_part ->
-        proccess_hex_revert_reason(hex_part)
+        process_hex_revert_reason(hex_part)
 
       hex_part ->
-        proccess_hex_revert_reason(hex_part)
+        process_hex_revert_reason(hex_part)
     end
   end
 
   # Function converts hex revert reason to the binary
-  @spec proccess_hex_revert_reason(nil) :: nil
-  defp proccess_hex_revert_reason(nil), do: nil
+  @spec process_hex_revert_reason(nil) :: nil
+  defp process_hex_revert_reason(nil), do: nil
 
-  @spec proccess_hex_revert_reason(binary()) :: binary()
-  defp proccess_hex_revert_reason(hex_revert_reason) do
+  @spec process_hex_revert_reason(binary()) :: binary()
+  defp process_hex_revert_reason(hex_revert_reason) do
     case Integer.parse(hex_revert_reason, 16) do
       {number, ""} ->
         :binary.encode_unsigned(number)
