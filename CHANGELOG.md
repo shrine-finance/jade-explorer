@@ -18,6 +18,7 @@
 
 ### Chore
 
+- [#7107](https://github.com/blockscout/blockscout/pull/7107) - Tx actions: remove excess delete_all calls and remake a cache
 - [#7072](https://github.com/blockscout/blockscout/pull/7072) - Add a separate docker compose for geth with clique consensus
 - [#7056](https://github.com/blockscout/blockscout/pull/7056) - Add path_helper in interact.js
 - [#7040](https://github.com/blockscout/blockscout/pull/7040) - Use alias BlockScoutWeb.Cldr.Number
