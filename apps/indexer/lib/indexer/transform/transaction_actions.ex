@@ -6,12 +6,13 @@ defmodule Indexer.Transform.TransactionActions do
   require Logger
 
   import Ecto.Query, only: [from: 2]
+  import Explorer.Helper, only: [decode_data: 2]
 
-  alias ABI.TypeDecoder
   alias Explorer.Chain.Cache.NetVersion
-  alias Explorer.Chain.{Address, Data, Hash, Token, TransactionAction}
+  alias Explorer.Chain.{Address, Hash, Token, TransactionAction}
   alias Explorer.Repo
   alias Explorer.SmartContract.Reader
+  alias Indexer.Helper
 
   @mainnet 1
   @goerli 5
@@ -173,7 +174,8 @@ defmodule Indexer.Transform.TransactionActions do
         first_topic
       ) ||
         (first_topic == @uniswap_v3_transfer_nft_event &&
-           String.downcase(address_hash_to_string(log.address_hash)) == String.downcase(@uniswap_v3_positions_nft))
+           String.downcase(Helper.address_hash_to_string(log.address_hash)) ==
+             String.downcase(@uniswap_v3_positions_nft))
     end)
   end
 
@@ -182,7 +184,7 @@ defmodule Indexer.Transform.TransactionActions do
 
     with false <- first_topic == @uniswap_v3_transfer_nft_event,
          # check UniswapV3Pool contract is legitimate
-         pool_address <- String.downcase(address_hash_to_string(log.address_hash)),
+         pool_address <- String.downcase(Helper.address_hash_to_string(log.address_hash)),
          false <- is_nil(legitimate[pool_address]),
          false <- Enum.empty?(legitimate[pool_address]),
          # this is legitimate uniswap pool, so handle this event
@@ -363,7 +365,7 @@ defmodule Indexer.Transform.TransactionActions do
           String.downcase(log.first_topic) != @uniswap_v3_transfer_nft_event
         end)
         |> Enum.reduce(addresses_acc, fn log, acc ->
-          pool_address = String.downcase(address_hash_to_string(log.address_hash))
+          pool_address = String.downcase(Helper.address_hash_to_string(log.address_hash))
           Map.put(acc, pool_address, true)
         end)
       end)
@@ -426,8 +428,8 @@ defmodule Indexer.Transform.TransactionActions do
         end
       end)
       |> Enum.map(fn {pool_address, pool} ->
-        token0 = if is_address_correct?(pool.token0), do: String.downcase(pool.token0), else: @burn_address
-        token1 = if is_address_correct?(pool.token1), do: String.downcase(pool.token1), else: @burn_address
+        token0 = if Helper.is_address_correct?(pool.token0), do: String.downcase(pool.token0), else: @burn_address
+        token1 = if Helper.is_address_correct?(pool.token1), do: String.downcase(pool.token1), else: @burn_address
         fee = if pool.fee == "", do: 0, else: pool.fee
 
         # we will call getPool(token0, token1, fee) public getter
@@ -525,22 +527,6 @@ defmodule Indexer.Transform.TransactionActions do
 
       Repo.delete_all(query)
     end)
-  end
-
-  defp decode_data("0x", types) do
-    for _ <- types, do: nil
-  end
-
-  defp decode_data("0x" <> encoded_data, types) do
-    encoded_data
-    |> Base.decode16!(case: :mixed)
-    |> TypeDecoder.decode_raw(types)
-  end
-
-  defp decode_data(%Data{} = data, types) do
-    data
-    |> Data.to_string()
-    |> decode_data(types)
   end
 
   defp fractional(%Decimal{} = amount, %Decimal{} = decimals) do
@@ -761,18 +747,6 @@ defmodule Indexer.Transform.TransactionActions do
 
   defp init_uniswap_pools_cache do
     init_cache(:tx_actions_uniswap_pools_cache)
-  end
-
-  defp is_address_correct?(address) do
-    String.match?(address, ~r/^0x[[:xdigit:]]{40}$/i)
-  end
-
-  defp address_hash_to_string(hash) do
-    if is_binary(hash) do
-      hash
-    else
-      Hash.to_string(hash)
-    end
   end
 
   defp logs_group_by_txs(logs) do
