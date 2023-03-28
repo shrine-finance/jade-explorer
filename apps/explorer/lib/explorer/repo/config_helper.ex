@@ -4,7 +4,7 @@ defmodule Explorer.Repo.ConfigHelper do
 
   Notably, this module processes the DATABASE_URL environment variable and extracts discrete parameters.
 
-  The priority of vars is postgrex environment vars < DATABASE_URL components, with values being overwritted by higher priority.
+  The priority of vars is postgrex environment vars < DATABASE_URL components, with values being overwritten by higher priority.
   """
 
   # https://hexdocs.pm/postgrex/Postgrex.html#start_link/1-options
@@ -17,7 +17,8 @@ defmodule Explorer.Repo.ConfigHelper do
   ]
 
   def get_db_config(opts) do
-    url = opts[:url] || System.get_env("DATABASE_URL")
+    url_encoded = opts[:url] || System.get_env("DATABASE_URL")
+    url = url_encoded && URI.decode(url_encoded)
     env_function = opts[:env_func] || (&System.get_env/1)
 
     @postgrex_env_vars
