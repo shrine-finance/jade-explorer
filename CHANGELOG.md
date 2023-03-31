@@ -4,6 +4,8 @@
 
 ### Features
 
+- [#7185](https://github.com/blockscout/blockscout/pull/7185) - Aave v3 transaction actions indexer
+
 ### Fixes
 
 ### Chore
