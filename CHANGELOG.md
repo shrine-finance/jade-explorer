@@ -4,6 +4,8 @@
 
 ### Features
 
+- [#7148](https://github.com/blockscout/blockscout/pull/7148) - API v2 improvements: API rate limiting, `/tokens/{address_hash}/instances/{token_id}/holders` and other changes
+
 ### Fixes
 
 - [#7186](https://github.com/blockscout/blockscout/pull/7186) - Fix build from Dockerfile
