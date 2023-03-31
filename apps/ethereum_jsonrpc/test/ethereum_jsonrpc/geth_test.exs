@@ -4,8 +4,56 @@ defmodule EthereumJSONRPC.GethTest do
   import Mox
 
   alias EthereumJSONRPC.Geth
+  alias EthereumJSONRPC.Geth.Tracer
 
   @moduletag :no_nethermind
+
+  describe "sad" do
+    test "opcode with js" do
+      assert Tracer.debug()
+             |> Enum.map(fn
+               %{"gasUsed" => gas_used, "gas" => gas} = call ->
+                 %{call | "gasUsed" => String.downcase(gas_used), "gas" => String.downcase(gas)}
+
+               %{"gasUsed" => gas_used} = call ->
+                 %{call | "gasUsed" => String.downcase(gas_used)}
+
+               %{"gas" => gas} = call ->
+                 %{call | "gas" => String.downcase(gas)}
+             end) ==
+               File.read!("/home/kitt/Repos/Blockscout/js_res.json")
+               |> Jason.decode!()
+    end
+
+    test "opcode with calltracer" do
+      Application.put_env(:ethereum_jsonrpc, Geth, tracer: "call_tracer")
+      calls = File.read!("/home/kitt/Repos/Blockscout/calltracer_res.json") |> Jason.decode!()
+      assert Geth.prepare_calls(calls) == Tracer.debug()
+      |> Enum.map(fn
+        %{"gasUsed" => gas_used, "gas" => gas} = call ->
+          %{call | "gasUsed" => String.downcase(gas_used), "gas" => String.downcase(gas)}
+
+        %{"gasUsed" => gas_used} = call ->
+          %{call | "gasUsed" => String.downcase(gas_used)}
+
+        %{"gas" => gas} = call ->
+          %{call | "gas" => String.downcase(gas)}
+      end)
+    end
+
+    test "asd" do
+      json = File.read!("/home/kitt/Repos/Blockscout/trace.json")
+               |> Jason.decode!()
+
+      Enum.reduce(json["result"]["structLogs"], 0, fn %{"gasCost" => gas_cost}, acc -> acc + gas_cost end) |> IO.inspect()
+    end
+
+    test "2" do
+      Application.put_env(:ethereum_jsonrpc, Geth, tracer: "call_tracer")
+      calls = File.read!("/home/kitt/Repos/Blockscout/calltracer_res.json") |> Jason.decode!()
+      assert Geth.prepare_calls(calls) == File.read!("/home/kitt/Repos/Blockscout/js_res.json") |> Jason.decode!()
+    end
+  end
 
   describe "fetch_internal_transactions/2" do
     # Infura Mainnet does not support debug_traceTransaction, so this cannot be tested expect in Mox

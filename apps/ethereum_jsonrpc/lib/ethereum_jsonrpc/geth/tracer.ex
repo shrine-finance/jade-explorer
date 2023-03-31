@@ -32,8 +32,9 @@ defmodule EthereumJSONRPC.Geth.Tracer do
         "from" => from,
         "traceAddress" => [],
         "value" => value,
-        "gas" => 0,
-        "gasUsed" => 0
+        "gas" => 1,
+        "gasUsed" => 0,
+        "logs" => []
       })
 
     ctx = %{
@@ -87,7 +88,7 @@ defmodule EthereumJSONRPC.Geth.Tracer do
            calls: [subsubcalls, subcalls | calls]
          } = ctx
        )
-       when log_depth == stack_depth - 1 do
+       when log_depth != stack_depth do
     call = process_return(log, call)
 
     subsubcalls =
@@ -109,7 +110,10 @@ defmodule EthereumJSONRPC.Geth.Tracer do
 
   defp step(%{"gas" => log_gas, "gasCost" => log_gas_cost} = log, %{stack: [%{"gas" => call_gas} = call | stack]} = ctx) do
     gas = max(call_gas, log_gas)
-    op(log, %{ctx | stack: [%{call | "gas" => gas, "gasUsed" => gas - log_gas - log_gas_cost} | stack]})
+
+    logs = Map.get(call, "logs") || []
+
+    op(log, %{ctx | stack: [Map.put(%{call | "gas" => gas, "gasUsed" => gas - log_gas - log_gas_cost}, "logs", [log["pc"] | logs]) | stack]})
   end
 
   defp op(%{"op" => "CREATE"} = log, ctx), do: create_op(log, ctx)
@@ -173,7 +177,7 @@ defmodule EthereumJSONRPC.Geth.Tracer do
       "init" => "0x" <> init,
       "gas" => 0,
       "gasUsed" => 0,
-      "value" => "0x" <> value,
+      "value" => value,
       "createdContractAddressHash" => nil,
       "createdContractCode" => "0x"
     }
@@ -232,7 +236,7 @@ defmodule EthereumJSONRPC.Geth.Tracer do
 
         _ ->
           [value | rest] = log_stack
-          {"0x" <> value, rest}
+          {value, rest}
       end
 
     IO.inspect(input_offset, label: "input_offset")
@@ -282,5 +286,11 @@ defmodule EthereumJSONRPC.Geth.Tracer do
     |> Enum.map(fn %{"gas" => gas, "gasUsed" => gas_used} = call ->
       %{call | "gas" => integer_to_quantity(gas), "gasUsed" => integer_to_quantity(gas_used)}
     end)
+  end
+
+  def debug() do
+    json = File.read!("/home/kitt/Repos/Blockscout/trace.json") |> Jason.decode!()
+
+    replay(json["result"], json["receipt"], json["tx"])
   end
 end

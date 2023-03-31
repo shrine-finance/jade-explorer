@@ -252,7 +252,7 @@ defmodule EthereumJSONRPC.Geth do
     {:error, annotated_error}
   end
 
-  defp prepare_calls(calls) do
+  def prepare_calls(calls) do
     case Application.get_env(:ethereum_jsonrpc, __MODULE__)[:tracer] do
       "call_tracer" -> {calls, 0} |> parse_call_tracer_calls([], [], false) |> Enum.reverse()
       "js" -> calls
