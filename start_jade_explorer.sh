@@ -1,5 +1,5 @@
 #!/bin/bash
-source /home/roger/.bash_profile
+export PATH=$PATH:/home/roger/elixir/bin
 
 export EXPLORER_DIR=/home/roger/projects/jade-explorer
 # export MIX_ENV=prod
