@@ -1,6 +1,8 @@
 export EXPLORER_DIR=/home/roger/projects/jade-explorer
 export GETH_DIR=/devnet/geth
 
+sudo supervisorctl stop jade-explorer
+
 cd $EXPLORER_DIR
 mix do ecto.drop, ecto.create, ecto.migrate
 
@@ -11,4 +13,4 @@ cd $GETH_DIR
 /devnet/geth/start-chain.sh
 
 cd $EXPLORER_DIR
-./start_jade_explorer.sh
+sudo supervisorctl start jade-explorer
