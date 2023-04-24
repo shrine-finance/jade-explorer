@@ -3,6 +3,10 @@ export GETH_DIR=/devnet/geth
 
 sudo supervisorctl stop jade-explorer
 
+killall beam.smp
+
+sleep 15
+
 cd $EXPLORER_DIR
 mix do ecto.drop, ecto.create, ecto.migrate
 
