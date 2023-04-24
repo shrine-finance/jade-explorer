@@ -1,6 +1,6 @@
 #!/bin/bash
 export PATH=$PATH:/home/roger/elixir/bin
-
+export HOME=/home/roger
 export EXPLORER_DIR=/home/roger/projects/jade-explorer
 # export MIX_ENV=prod
 
