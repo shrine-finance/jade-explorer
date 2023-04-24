@@ -1,6 +1,7 @@
 #!/bin/bash
 
 export EXPLORER_DIR=/home/roger/projects/jade-explorer
+export MIX_ENV=prod
 
 cd $EXPLORER_DIR
 
