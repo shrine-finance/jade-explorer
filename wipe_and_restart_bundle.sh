@@ -11,10 +11,10 @@ cd $EXPLORER_DIR
 mix do ecto.drop, ecto.create, ecto.migrate
 
 cd $GETH_DIR
-/devnet/geth/stop-chain.sh
-/devnet/geth/wipe-chain.sh
-/devnet/geth/init-chain.sh
-/devnet/geth/start-chain.sh
+./stop-chain.sh
+./wipe-chain.sh
+./init-chain.sh
+./start-chain.sh
 
 cd $EXPLORER_DIR
 sudo supervisorctl start jade-explorer
