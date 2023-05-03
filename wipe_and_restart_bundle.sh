@@ -10,7 +10,6 @@ sleep 15
 cd $EXPLORER_DIR
 mix do ecto.drop, ecto.create, ecto.migrate
 
-cd $GETH_DIR
 ./stop-chain.sh
 ./wipe-chain.sh
 ./init-chain.sh
