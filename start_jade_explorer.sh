@@ -10,6 +10,9 @@ cd $EXPLORER_DIR
 export ETHEREUM_JSONRPC_HTTP_URL=http://127.0.0.1:8545
 export ETHEREUM_JSONRPC_VARIANT=geth
 
+export MICROSERVICE_SC_VERIFIER_ENABLED=true
+export MICROSERVICE_SC_VERIFIER_URL=http://0.0.0.0:8043/
+
 export DATABASE_URL=postgresql://postgres:meowiscuteaf@localhost:5432/blockscout
 
 export ETHEREUM_JSONRPC_WS_URL=ws://127.0.0.1:8546

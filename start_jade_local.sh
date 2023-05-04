@@ -26,6 +26,9 @@ export LOGO_FOOTER=/images/jadescan-logo.png
 export SUBNETWORK="JADE Network"
 export CHAIN_ID=99168
 
+export MICROSERVICE_SC_VERIFIER_ENABLED=true
+export MICROSERVICE_SC_VERIFIER_URL=http://0.0.0.0:8043/
+
 _mix_system_gettext_path=$(mix deps.path gettext)
 _mix_system_decimal_path=$(mix deps.path decimal)
 export C_INCLUDE_PATH=${_mix_system_gettext_path}/priv:${_mix_system_decimal_path}/priv:${C_INCLUDE_PATH}
