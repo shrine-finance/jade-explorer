@@ -1,4 +1,5 @@
 #!/bin/bash
+
 export PATH=$PATH:/home/roger/elixir/bin
 export HOME=/home/roger
 export EXPLORER_DIR=/home/roger/projects/jade-explorer
@@ -26,8 +27,10 @@ export LINK_TO_OTHER_EXPLORERS=false
 export PORT=4000
 export COIN=JADE
 export COIN_NAME=JADE
+
 export LOGO=/images/jadescan-logo.png
 export LOGO_FOOTER=/images/jadescan-logo.png
+
 export SUBNETWORK="JADE Network"
 export CHAIN_ID=99168
 
