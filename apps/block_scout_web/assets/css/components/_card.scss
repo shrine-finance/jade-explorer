@@ -1,6 +1,6 @@
 $card-background-color: #fff !default;
 $card-tab-active: $primary !default;
-$card-default-border-radius: 10px !default;
+$card-default-border-radius: 2px !default;
 $card-horizontal-padding: 30px;
 $card-vertical-padding: 30px;
 $card-background-1: $primary !default;
@@ -52,7 +52,7 @@ $card-tab-icon-color-active: #fff !default;
 
 .card-title {
   font-size: 18px;
-  font-weight: normal;
+  font-weight: 500;
   line-height: 1.2rem;
   margin-bottom: 2rem;
 

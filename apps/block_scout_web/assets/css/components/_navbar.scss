@@ -43,7 +43,7 @@ $header-logo-text-color: #333 !default;
 
       &:before {
         background-color: $header-icon-border-color-hover;
-        border-radius: 0 0 4px 4px;
+        border-radius: 0;
         content: "";
         display: block;
         height: 0.25rem;
