@@ -11,7 +11,7 @@ $header-textfield-text-color: $header-links-color !default;
 $header-textfield-background-color: #f5f6fa !default;
 $header-textfield-magnifier-color: $header-links-color !default;
 $header-link-horizontal-padding: 0.71rem;
-$navbar-logo-height: auto !default;
+$navbar-logo-height: 62px !default;
 $navbar-logo-width: 100% !default;
 $header-logo-text-color: #333 !default;
 
@@ -43,7 +43,7 @@ $header-logo-text-color: #333 !default;
 
       &:before {
         background-color: $header-icon-border-color-hover;
-        border-radius: 0 0 4px 4px;
+        border-radius: 0;
         content: "";
         display: block;
         height: 0.25rem;
@@ -251,7 +251,7 @@ $header-logo-text-color: #333 !default;
 
 .navbar-logo {
   max-height: $navbar-logo-height;
-  width: $navbar-logo-width;
+  width: auto;
 }
 
 .logo-text {

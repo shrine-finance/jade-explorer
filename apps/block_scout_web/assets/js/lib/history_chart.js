@@ -9,7 +9,7 @@ import { isDarkMode } from '../lib/dark_mode'
 // @ts-ignore
 import sassVariables from '../../css/export-vars-to-js.module.scss'
 
-Chart.defaults.font.family = 'Nunito, "Helvetica Neue", Arial, sans-serif,"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
+Chart.defaults.font.family = '"Inter", "Helvetica Neue", Arial, sans-serif,"Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"'
 Chart.register(LineController, LineElement, PointElement, LinearScale, TimeScale, Title, Tooltip)
 
 // @ts-ignore

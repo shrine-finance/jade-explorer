@@ -3,6 +3,24 @@ $blue: #4b89fb !default;
 $success: #34c0ad !default;
 
 body {
+  opacity: 0;
+  pointer-events: none;
+}
+
+body.black-bg {
+  background: black;
+}
+
+body.animating {
+  transition: .3s ease-out;
+}
+
+body.fade-in {
+  opacity: 1;
+  pointer-events: unset !important;
+}
+
+body {
   font-family: $font-family;
   font-size: 12px;
 }

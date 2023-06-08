@@ -51,6 +51,9 @@ $teal: #009097 !default;
 $cyan: #90e1d8 !default;
 $dark-purple: #923dc3;
 
+$meow-eye: #e4b34c;
+$meow-eye-dark: #d59c20;
+
 $colors: () !default;
 $colors: map-merge(
   (
@@ -71,9 +74,9 @@ $colors: map-merge(
   $colors
 );
 
-$primary: $indigo !default;
-$dark-primary: #9b62ff !default;
-$dark-primary-alternate: #9b62ff !default;
+$primary: $meow-eye !default;
+$dark-primary: $meow-eye-dark !default;
+$dark-primary-alternate: $meow-eye-dark !default;
 $secondary: #7dd79f !default;
 $dark-secondary: #87e1a9 !default;
 $tertiary: $purple !default;
@@ -240,9 +243,9 @@ $line-height-sm: 1.5 !default;
 $border-width: 1px !default;
 $border-color: $gray-300 !default;
 
-$border-radius: 0.1rem !default;
-$border-radius-lg: 0.3rem !default;
-$border-radius-sm: 0.2rem !default;
+$border-radius: 2px !default;
+$border-radius-lg: 4.5px !default;
+$border-radius-sm: 1.5px !default;
 
 $box-shadow-sm: 0 0.125rem 0.25rem rgba($black, 0.075) !default;
 $box-shadow: 0 0.5rem 1rem rgba($black, 0.15) !default;
@@ -263,7 +266,7 @@ $transition-cont: all 0.4s ease-in-out !default;
 // Font, line-height, and color for body text, headings, and more.
 
 // stylelint-disable value-keyword-case
-$font-family: Nunito, "Helvetica Neue", Arial, sans-serif,
+$font-family: "Inter", "Helvetica Neue", Arial, sans-serif,
   "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
 $font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas,
   "Liberation Mono", "Courier New", monospace !default;
@@ -289,7 +292,7 @@ $h5-font-size: $font-size-base * 1.25 !default;
 $h6-font-size: $font-size-base !default;
 
 $headings-margin-bottom: math.div($spacer, 2) !default;
-$headings-font-family: inherit !default;
+$headings-font-family: "Prompt", $font-family !default;
 $headings-font-weight: 500 !default;
 $headings-line-height: 1.2 !default;
 $headings-color: inherit !default;
